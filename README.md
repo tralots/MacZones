@@ -32,6 +32,14 @@
 
 ## Install
 
+### Homebrew
+
+```bash
+brew install --cask tralots/tap/maczones
+```
+
+Then open MacZones and grant **Accessibility** access when asked. Update with `brew upgrade --cask maczones`.
+
 ### Download
 
 1. Grab `MacZones-x.y.z.zip` from [Releases](../../releases/latest) and unzip it.

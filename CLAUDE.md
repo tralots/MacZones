@@ -18,6 +18,20 @@ swift build               # compile only (fast type-check loop)
 1. Bump `CFBundleShortVersionString` + `CFBundleVersion` in `Resources/Info.plist`.
 2. `scripts/build.sh release`, commit, push.
 3. `gh release create vX.Y.Z build/MacZones-X.Y.Z.zip --title "MacZones X.Y.Z" --notes "..."`.
+4. `scripts/publish-cask.sh` → hashes the published zip, updates `packaging/homebrew/maczones.rb`, pushes it to
+   the tap repo `tralots/homebrew-tap` (`Casks/maczones.rb`) via the GitHub API. Commit the updated cask here too.
+   Check with `brew update && brew audit --cask --strict --online tralots/tap/maczones`.
+
+### Homebrew cask notes (Homebrew 7.x)
+
+- Install: `brew install --cask tralots/tap/maczones`. Source of truth is `packaging/homebrew/maczones.rb`; the tap
+  repo is publish output only — don't edit it by hand.
+- Official homebrew/cask rejects non-notarized apps, so we use a personal tap.
+- Cask clears quarantine in `postflight_steps` (old `postflight do … system_command` is deprecated in Homebrew 7).
+  Steps run sandboxed: paths in `args` use `{{appdir}}` placeholders and need `writable_paths` + `writable_base: :appdir`.
+- `depends_on macos: :sonoma` (string form `">= :sonoma"` is deprecated).
+- The user's `/Applications/MacZones.app` is brew-managed now; `scripts/build.sh install` still works for dev builds
+  (overwrites it; brew keeps reporting the cask version until the next `brew upgrade`).
 
 - Release builds are signed with "Apple Development", **not notarized** (no Developer ID cert), so downloaders must
   use "Open Anyway". README documents this. Notarizing needs a Developer ID Application cert + `notarytool`.
