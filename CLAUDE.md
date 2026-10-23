@@ -21,6 +21,15 @@ swift build               # compile only (fast type-check loop)
 4. `scripts/update-cask.sh` → hashes the published zip and updates `Casks/maczones.rb`. Commit + push = live
    (users get it on `brew update`). Check: `brew audit --cask --strict --online tralots/maczones/maczones`.
 
+- Notarization: `build.sh` prefers a "Developer ID Application" identity (hardened runtime + timestamp) and
+  `release` notarizes + staples via `notarytool` keychain profile `MacZones` (team `M8JH8T7G2F`, same account the
+  user uses for their Dwellio app). Without both it falls back to Apple Development, un-notarized, and the README's
+  "Open Anyway" step applies.
+  One-time setup (user): Xcode → Settings → Accounts → Manage Certificates → + Developer ID Application;
+  `xcrun notarytool store-credentials MacZones --apple-id <id> --team-id M8JH8T7G2F` (app-specific password).
+  Switching signing identity invalidates the Accessibility grant once (re-grant in System Settings).
+- README screenshots live in `docs/` (captured via `-MZPane` + `screencapture -l`, see Testing). Refresh them when UI changes.
+
 ### Homebrew cask notes (Homebrew 7.x)
 
 - No separate tap repo (user's choice): this repo *is* the tap via its root `Casks/` folder.
