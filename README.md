@@ -35,7 +35,8 @@
 ### Homebrew
 
 ```bash
-brew install --cask tralots/tap/maczones
+brew tap tralots/maczones https://github.com/tralots/MacZones
+brew install --cask maczones
 ```
 
 Then open MacZones and grant **Accessibility** access when asked. Update with `brew upgrade --cask maczones`.
