@@ -16,14 +16,6 @@ cask "maczones" do
 
   app "MacZones.app"
 
-  # Not notarized (no Developer ID), so drop the quarantine flag; otherwise Gatekeeper blocks the first launch.
-  postflight_steps do
-    run "/usr/bin/xattr",
-        args:           ["-dr", "com.apple.quarantine", "{{appdir}}/MacZones.app"],
-        writable_paths: ["MacZones.app"],
-        writable_base:  :appdir
-  end
-
   uninstall quit: "com.edijs.MacZones"
 
   zap trash: [

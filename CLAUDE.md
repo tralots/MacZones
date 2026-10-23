@@ -23,11 +23,14 @@ swift build               # compile only (fast type-check loop)
 
 - Notarization: `build.sh` prefers a "Developer ID Application" identity (hardened runtime + timestamp) and
   `release` notarizes + staples via `notarytool` keychain profile `MacZones` (team `M8JH8T7G2F`, same account the
-  user uses for their Dwellio app). Without both it falls back to Apple Development, un-notarized, and the README's
-  "Open Anyway" step applies.
-  One-time setup (user): Xcode → Settings → Accounts → Manage Certificates → + Developer ID Application;
-  `xcrun notarytool store-credentials MacZones --apple-id <id> --team-id M8JH8T7G2F` (app-specific password).
+  user uses for their Dwellio app). Without both it falls back to Apple Development, un-notarized.
+  Set up (done 2026-10-23): "Developer ID Application: Edijs Bethers (M8JH8T7G2F)" cert + notary profile from an
+  App Store Connect **API key** (Team Keys, key id WQ38PD5S9N). The app-specific-password route kept returning
+  401 despite correct Apple ID/team — use the API key route if the profile ever needs recreating:
+  `xcrun notarytool store-credentials MacZones --key AuthKey_<id>.p8 --key-id <id> --issuer <issuer-uuid>`.
   Switching signing identity invalidates the Accessibility grant once (re-grant in System Settings).
+  First notarization for a new Developer ID can take a long time (>10 min); `xcrun notarytool history
+  --keychain-profile MacZones` shows status.
 - README screenshots live in `docs/` (captured via `-MZPane` + `screencapture -l`, see Testing). Refresh them when UI changes.
 
 ### Homebrew cask notes (Homebrew 7.x)
@@ -35,10 +38,9 @@ swift build               # compile only (fast type-check loop)
 - No separate tap repo (user's choice): this repo *is* the tap via its root `Casks/` folder.
   `brew tap tralots/maczones https://github.com/tralots/MacZones && brew install --cask maczones`.
   A one-command `brew install tralots/x/y` would need a repo named `homebrew-*` — deliberately not done.
-- Official homebrew/cask rejects non-notarized apps.
-- Until notarized, the cask clears quarantine in `postflight_steps` (old `postflight do … system_command` is
-  deprecated in Homebrew 7). Steps run sandboxed: `args` paths use `{{appdir}}` placeholders and need
-  `writable_paths` + `writable_base: :appdir`. Drop that block once releases are notarized.
+- Releases are notarized (since 1.0.1), so the cask needs no quarantine workaround. If one is ever needed again:
+  Homebrew 7 uses sandboxed `postflight_steps` (old `postflight do … system_command` is deprecated); `run` args take
+  `{{appdir}}` placeholders and need `writable_paths` + `writable_base: :appdir`.
 - `depends_on macos: :sonoma` (string form `">= :sonoma"` is deprecated).
 - The user's `/Applications/MacZones.app` is brew-managed; `scripts/build.sh install` still works for dev builds
   (overwrites it; brew keeps reporting the cask version until the next `brew upgrade`).

@@ -44,9 +44,8 @@ Then open MacZones and grant **Accessibility** access when asked. Update with `b
 ### Download
 
 1. Grab `MacZones-x.y.z.zip` from [Releases](../../releases/latest) and unzip it.
-2. Move `MacZones.app` to `/Applications` and open it.
-3. The build is not notarized, so macOS blocks the first launch. Go to **System Settings → Privacy & Security** and click **Open Anyway**. (Or run `xattr -dr com.apple.quarantine /Applications/MacZones.app`.)
-4. Grant **Accessibility** access when asked (System Settings → Privacy & Security → Accessibility). MacZones needs it to move other apps' windows; the settings window updates as soon as it's granted.
+2. Move `MacZones.app` to `/Applications` and open it. Releases are signed and notarized by Apple, so it opens normally.
+3. Grant **Accessibility** access when asked (System Settings → Privacy & Security → Accessibility). MacZones needs it to move other apps' windows; the settings window updates as soon as it's granted.
 
 Requires macOS 14 Sonoma or later. Universal binary (Apple silicon + Intel).
 
