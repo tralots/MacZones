@@ -9,8 +9,19 @@ Drag a window while holding a modifier (default ⇧ Shift) → zone overlay appe
 scripts/build.sh          # build build/MacZones.app (release)
 scripts/build.sh run      # build, kill running copy, launch
 scripts/build.sh install  # build, copy to /Applications, launch
+scripts/build.sh release  # universal arm64+x86_64 build → build/MacZones-<version>.zip
 swift build               # compile only (fast type-check loop)
 ```
+
+### Releasing (public repo: github.com/tralots/MacZones)
+
+1. Bump `CFBundleShortVersionString` + `CFBundleVersion` in `Resources/Info.plist`.
+2. `scripts/build.sh release`, commit, push.
+3. `gh release create vX.Y.Z build/MacZones-X.Y.Z.zip --title "MacZones X.Y.Z" --notes "..."`.
+
+- Release builds are signed with "Apple Development", **not notarized** (no Developer ID cert), so downloaders must
+  use "Open Anyway". README documents this. Notarizing needs a Developer ID Application cert + `notarytool`.
+- README screenshots live in `docs/` (captured via `-MZPane` + `screencapture -l`, see Testing). Refresh them when UI changes.
 
 ### Testing
 
