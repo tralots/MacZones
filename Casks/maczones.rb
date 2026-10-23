@@ -1,6 +1,6 @@
 cask "maczones" do
-  version "1.0.0"
-  sha256 "6143b30652229b200a16ec264778adaa355d4f1ef56f995af307c38bf4fe81b2"
+  version "1.0.1"
+  sha256 "a1e3a9a02796011bd908cb9467a0367bf1b4eb039112c94191a040fe171cfa06"
 
   url "https://github.com/tralots/MacZones/releases/download/v#{version}/MacZones-#{version}.zip"
   name "MacZones"
